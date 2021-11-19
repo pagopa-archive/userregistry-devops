@@ -11,11 +11,11 @@ variable "tlscert-dev-api-dev-userregistry-pagopa-it" {
       path                    = "TLS-Certificates\\DEV"
       dns_record_name         = "api"
       dns_zone_name           = "dev.userregistry.pagopa.it"
-      dns_zone_resource_group = "usrreg-d-vnet-rg"
+      dns_zone_resource_group = "usrreg-d-vnet-rg" #CAN'T BE A VARIABLE
       # common variables to all pipelines
       variables = {
         CERT_NAME_EXPIRE_SECONDS = "2592000" #30 days
-        KEY_VAULT_NAME           = "usrreg-d-kv"
+        KEY_VAULT_NAME           = "usrreg-d-kv" #CAN'T BE A VARIABLE
       }
       # common secret variables to all pipelines
       variables_secret = {
@@ -26,20 +26,24 @@ variable "tlscert-dev-api-dev-userregistry-pagopa-it" {
 
 locals {
   tlscert-dev-api-dev-userregistry-pagopa-it = {
-    tenant_id         = module.secrets.values["PAGOPAIT-TENANTID"].value
-    subscription_name = "DEV-USERREGISTRY"
-    subscription_id   = module.secrets.values["PAGOPAIT-DEV-USERREGISTRY-SUBSCRIPTION-ID"].value
+    tenant_id         = module.secrets.values["TENANTID"].value
+    subscription_name = var.dev_subscription_name
+    subscription_id   = module.secrets.values["DEV-SUBSCRIPTION-ID"].value
   }
   tlscert-dev-api-dev-userregistry-pagopa-it-variables = {
-    KEY_VAULT_SERVICE_CONNECTION = module.DEV-USERREGISTRY-TLS-CERT-SERVICE-CONN.service_endpoint_name
+    KEY_VAULT_SERVICE_CONNECTION = module.DEV-TLS-CERT-SERVICE-CONN.service_endpoint_name
   }
   tlscert-dev-api-dev-userregistry-pagopa-it-variables_secret = {
   }
 }
 
-module "tlscert-dev-apiconfig-dev-platform-pagopa-it-cert_az" {
-  source = "git::https://github.com/pagopa/azuredevops-tf-modules.git//azuredevops_build_definition_tls_cert?ref=v2.0.2"
+module "tlscert-dev-api-dev-userregistry-pagopa-it-cert_az" {
+  source = "git::https://github.com/pagopa/azuredevops-tf-modules.git//azuredevops_build_definition_tls_cert?ref=v2.0.3"
   count  = var.tlscert-dev-api-dev-userregistry-pagopa-it.pipeline.enable_tls_cert == true ? 1 : 0
+
+  providers = {
+    azurerm = azurerm.dev
+  }
 
   project_id                   = azuredevops_project.project.id
   repository                   = var.tlscert-dev-api-dev-userregistry-pagopa-it.repository
@@ -55,9 +59,9 @@ module "tlscert-dev-apiconfig-dev-platform-pagopa-it-cert_az" {
   subscription_name       = local.tlscert-dev-api-dev-userregistry-pagopa-it.subscription_name
   subscription_id         = local.tlscert-dev-api-dev-userregistry-pagopa-it.subscription_id
 
-  credential_subcription              = local.key_vault_subscription
-  credential_key_vault_name           = local.key_vault_name
-  credential_key_vault_resource_group = local.key_vault_resource_group
+  credential_subcription              = var.dev_subscription_name
+  credential_key_vault_name           = local.dev_key_vault_name
+  credential_key_vault_resource_group = local.dev_key_vault_resource_group
 
   variables = merge(
     var.tlscert-dev-api-dev-userregistry-pagopa-it.pipeline.variables,
@@ -70,6 +74,6 @@ module "tlscert-dev-apiconfig-dev-platform-pagopa-it-cert_az" {
   )
 
   service_connection_ids_authorization = [
-    module.DEV-USERREGISTRY-TLS-CERT-SERVICE-CONN.service_endpoint_id,
+    module.DEV-TLS-CERT-SERVICE-CONN.service_endpoint_id,
   ]
 }

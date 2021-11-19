@@ -8,7 +8,7 @@ ACTION=$1
 PROJECT=$2
 shift 2
 other="$*"
-BACKEND_CONFIG_PATH="../.env/azuredevops_state.tfvars"
+BACKEND_CONFIG_PATH="../.env/${PROJECT}_state.tfvars"
 BACKEND_INI_PATH="../.env/prod-backend.ini"
 TF_VAR_FILE_PATH="../.env/terraform.tfvars"
 

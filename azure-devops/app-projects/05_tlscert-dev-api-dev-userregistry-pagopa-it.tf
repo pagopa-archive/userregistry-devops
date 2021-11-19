@@ -11,11 +11,9 @@ variable "tlscert-dev-api-dev-userregistry-pagopa-it" {
       path                    = "TLS-Certificates\\DEV"
       dns_record_name         = "api"
       dns_zone_name           = "dev.userregistry.pagopa.it"
-      dns_zone_resource_group = "usrreg-d-vnet-rg" #CAN'T BE A VARIABLE
       # common variables to all pipelines
       variables = {
         CERT_NAME_EXPIRE_SECONDS = "2592000" #30 days
-        KEY_VAULT_NAME           = "usrreg-d-kv" #CAN'T BE A VARIABLE
       }
       # common secret variables to all pipelines
       variables_secret = {
@@ -31,7 +29,8 @@ locals {
     subscription_id   = module.secrets.values["DEV-SUBSCRIPTION-ID"].value
   }
   tlscert-dev-api-dev-userregistry-pagopa-it-variables = {
-    KEY_VAULT_SERVICE_CONNECTION = module.DEV-TLS-CERT-SERVICE-CONN.service_endpoint_name
+    KEY_VAULT_SERVICE_CONNECTION  = module.DEV-TLS-CERT-SERVICE-CONN.service_endpoint_name,
+    KEY_VAULT_NAME                = local.dev_key_vault_name
   }
   tlscert-dev-api-dev-userregistry-pagopa-it-variables_secret = {
   }
@@ -54,7 +53,7 @@ module "tlscert-dev-api-dev-userregistry-pagopa-it-cert_az" {
 
   dns_record_name         = var.tlscert-dev-api-dev-userregistry-pagopa-it.pipeline.dns_record_name
   dns_zone_name           = var.tlscert-dev-api-dev-userregistry-pagopa-it.pipeline.dns_zone_name
-  dns_zone_resource_group = var.tlscert-dev-api-dev-userregistry-pagopa-it.pipeline.dns_zone_resource_group
+  dns_zone_resource_group = local.dev_vnet_rg
   tenant_id               = local.tlscert-dev-api-dev-userregistry-pagopa-it.tenant_id
   subscription_name       = local.tlscert-dev-api-dev-userregistry-pagopa-it.subscription_name
   subscription_id         = local.tlscert-dev-api-dev-userregistry-pagopa-it.subscription_id

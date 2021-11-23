@@ -16,7 +16,7 @@ variable "userregistry-management" {
 locals {
   # global vars
   userregistry-management-variables = {
-    dockerfile                       = "Dockerfile"
+    dockerfile = "Dockerfile"
   }
   # global secrets
   userregistry-management-variables_secret = {
@@ -32,7 +32,7 @@ locals {
   }
   # deploy vars
   userregistry-management-variables_deploy = {
-    image_repository_name               = replace(var.userregistry-management.repository.name, "-", "")
+    image_repository_name = replace(var.userregistry-management.repository.name, "-", "")
     # todo
     dev_container_registry_service_conn = azuredevops_serviceendpoint_azurecr.selfcare-azurecr-dev.service_endpoint_name
     dev_azure_subscription              = azuredevops_serviceendpoint_kubernetes.DEV-USERREGISTRY.service_endpoint_name

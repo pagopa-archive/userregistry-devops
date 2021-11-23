@@ -27,7 +27,7 @@ data "azurerm_key_vault" "kv_dev" {
 }
 
 resource "azurerm_key_vault_access_policy" "DEV-TLS-CERT-SERVICE-CONN_kv_dev" {
-  provider     = azurerm.dev
+  provider = azurerm.dev
 
   key_vault_id = data.azurerm_key_vault.kv_dev.id
   tenant_id    = module.secrets.values["TENANTID"].value

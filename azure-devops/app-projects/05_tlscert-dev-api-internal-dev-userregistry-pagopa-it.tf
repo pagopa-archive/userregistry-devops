@@ -7,10 +7,10 @@ variable "tlscert-dev-api-internal-dev-userregistry-pagopa-it" {
       pipelines_path = "."
     }
     pipeline = {
-      enable_tls_cert         = true
-      path                    = "TLS-Certificates\\DEV"
-      dns_record_name         = "api.internal"
-      dns_zone_name           = "dev.userregistry.pagopa.it"
+      enable_tls_cert = true
+      path            = "TLS-Certificates\\DEV"
+      dns_record_name = "api.internal"
+      dns_zone_name   = "dev.userregistry.pagopa.it"
       # common variables to all pipelines
       variables = {
         CERT_NAME_EXPIRE_SECONDS = "2592000" #30 days
@@ -29,8 +29,8 @@ locals {
     subscription_id   = module.secrets.values["DEV-SUBSCRIPTION-ID"].value
   }
   tlscert-dev-api-internal-dev-userregistry-pagopa-it-variables = {
-    KEY_VAULT_SERVICE_CONNECTION  = module.DEV-TLS-CERT-SERVICE-CONN.service_endpoint_name,
-    KEY_VAULT_NAME                = local.dev_key_vault_name
+    KEY_VAULT_SERVICE_CONNECTION = module.DEV-TLS-CERT-SERVICE-CONN.service_endpoint_name,
+    KEY_VAULT_NAME               = local.dev_key_vault_name
   }
   tlscert-dev-api-internal-dev-userregistry-pagopa-it-variables_secret = {
   }

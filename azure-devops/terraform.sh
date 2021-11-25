@@ -2,6 +2,12 @@
 
 set -e
 
+#
+# HOW TO USE IT:
+# $ sh terraform.sh apply iac -> to apply terraform file inside iac-projects
+# $ sh terraform.sh apply app -> to apply terraform file inside app-projects
+#
+
 SCRIPT_PATH="$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 CURRENT_DIRECTORY="$(basename "$SCRIPT_PATH")"
 ACTION=$1

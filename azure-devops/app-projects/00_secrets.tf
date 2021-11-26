@@ -17,5 +17,14 @@ module "secrets" {
     "DEV-SUBSCRIPTION-ID",
     "UAT-SUBSCRIPTION-ID",
     "PROD-SUBSCRIPTION-ID",
+    "dev-usrreg-aks-apiserver-url",
+    "dev-usrreg-aks-azure-devops-sa-token",
+    "dev-usrreg-aks-azure-devops-sa-cacrt",
+    # "uat-usrreg-aks-apiserver-url",
+    # "uat-usrreg-aks-azure-devops-sa-token",
+    # "uat-usrreg-aks-azure-devops-sa-cacrt",
+    # "prod-usrreg-aks-apiserver-url",
+    # "prod-usrreg-aks-azure-devops-sa-token",
+    # "prod-usrreg-aks-azure-devops-sa-cacrt"
   ]
 }

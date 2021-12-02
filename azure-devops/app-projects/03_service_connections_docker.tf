@@ -14,7 +14,7 @@ resource "azuredevops_serviceendpoint_azurecr" "azurecr-dev" {
 
   project_id                = azuredevops_project.project.id
   service_endpoint_name     = format("%s-azurecr-dev", local.prefix)
-  resource_group            = format("%s-d-app-rg", local.prefix)
+  resource_group            = format("%s-d-docker-rg", local.prefix)
   azurecr_name              = format("%sdacr", local.prefix)
   azurecr_subscription_name = var.dev_subscription_name
   azurecr_spn_tenantid      = module.secrets.values["TENANTID"].value

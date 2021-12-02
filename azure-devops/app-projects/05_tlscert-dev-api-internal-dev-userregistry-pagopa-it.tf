@@ -27,6 +27,13 @@ locals {
     tenant_id         = module.secrets.values["TENANTID"].value
     subscription_name = var.dev_subscription_name
     subscription_id   = module.secrets.values["DEV-SUBSCRIPTION-ID"].value
+    dns_zone_resource_group = local.dev_vnet_rg
+    credential_subcription    = var.dev_subscription_name
+    credential_key_vault_name = local.dev_key_vault_name
+    credential_key_vault_resource_group = local.dev_key_vault_resource_group
+    service_connection_ids_authorization = [
+      module.DEV-TLS-CERT-SERVICE-CONN.service_endpoint_id,
+    ]
   }
   tlscert-dev-api-internal-dev-userregistry-pagopa-it-variables = {
     KEY_VAULT_SERVICE_CONNECTION = module.DEV-TLS-CERT-SERVICE-CONN.service_endpoint_name,
@@ -36,10 +43,12 @@ locals {
   }
 }
 
+# change only providers
 module "tlscert-dev-api-internal-dev-userregistry-pagopa-it-cert_az" {
   source = "git::https://github.com/pagopa/azuredevops-tf-modules.git//azuredevops_build_definition_tls_cert?ref=v2.0.3"
   count  = var.tlscert-dev-api-internal-dev-userregistry-pagopa-it.pipeline.enable_tls_cert == true ? 1 : 0
-
+  
+  # change me
   providers = {
     azurerm = azurerm.dev
   }
@@ -53,14 +62,14 @@ module "tlscert-dev-api-internal-dev-userregistry-pagopa-it-cert_az" {
 
   dns_record_name         = var.tlscert-dev-api-internal-dev-userregistry-pagopa-it.pipeline.dns_record_name
   dns_zone_name           = var.tlscert-dev-api-internal-dev-userregistry-pagopa-it.pipeline.dns_zone_name
-  dns_zone_resource_group = local.dev_vnet_rg
+  dns_zone_resource_group = local.tlscert-dev-api-internal-dev-userregistry-pagopa-it.dns_zone_resource_group
   tenant_id               = local.tlscert-dev-api-internal-dev-userregistry-pagopa-it.tenant_id
   subscription_name       = local.tlscert-dev-api-internal-dev-userregistry-pagopa-it.subscription_name
   subscription_id         = local.tlscert-dev-api-internal-dev-userregistry-pagopa-it.subscription_id
 
-  credential_subcription              = var.dev_subscription_name
-  credential_key_vault_name           = local.dev_key_vault_name
-  credential_key_vault_resource_group = local.dev_key_vault_resource_group
+  credential_subcription              = local.tlscert-dev-api-internal-dev-userregistry-pagopa-it.credential_subcription
+  credential_key_vault_name           = local.tlscert-dev-api-internal-dev-userregistry-pagopa-it.credential_key_vault_name
+  credential_key_vault_resource_group = local.tlscert-dev-api-internal-dev-userregistry-pagopa-it.credential_key_vault_resource_group
 
   variables = merge(
     var.tlscert-dev-api-internal-dev-userregistry-pagopa-it.pipeline.variables,
@@ -72,7 +81,5 @@ module "tlscert-dev-api-internal-dev-userregistry-pagopa-it-cert_az" {
     local.tlscert-dev-api-internal-dev-userregistry-pagopa-it-variables_secret,
   )
 
-  service_connection_ids_authorization = [
-    module.DEV-TLS-CERT-SERVICE-CONN.service_endpoint_id,
-  ]
+  service_connection_ids_authorization = local.tlscert-dev-api-internal-dev-userregistry-pagopa-it.service_connection_ids_authorization
 }

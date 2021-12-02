@@ -22,8 +22,8 @@ module "DEV-TLS-CERT-SERVICE-CONN" {
 
 data "azurerm_key_vault" "kv_dev" {
   provider            = azurerm.dev
-  name                = format("%s-d-kv", local.prefix)
-  resource_group_name = format("%s-d-sec-rg", local.prefix)
+  name                = local.dev_key_vault_name
+  resource_group_name = local.dev_key_vault_resource_group
 }
 
 resource "azurerm_key_vault_access_policy" "DEV-TLS-CERT-SERVICE-CONN_kv_dev" {
@@ -57,8 +57,8 @@ module "UAT-TLS-CERT-SERVICE-CONN" {
 
 data "azurerm_key_vault" "kv_uat" {
   provider            = azurerm.uat
-  name                = format("%s-u-kv", local.prefix)
-  resource_group_name = format("%s-u-sec-rg", local.prefix)
+  name                = local.uat_key_vault_name
+  resource_group_name = local.uat_key_vault_resource_group
 }
 
 resource "azurerm_key_vault_access_policy" "UAT-TLS-CERT-SERVICE-CONN_kv_uat" {
@@ -91,8 +91,8 @@ module "PROD-TLS-CERT-SERVICE-CONN" {
 
 data "azurerm_key_vault" "kv_prod" {
   provider            = azurerm.prod
-  name                = format("%s-p-kv", local.prefix)
-  resource_group_name = format("%s-p-sec-rg", local.prefix)
+  name                = local.prod_key_vault_name
+  resource_group_name = local.prod_key_vault_resource_group
 }
 
 resource "azurerm_key_vault_access_policy" "PROD-TLS-CERT-SERVICE-CONN_kv_prod" {

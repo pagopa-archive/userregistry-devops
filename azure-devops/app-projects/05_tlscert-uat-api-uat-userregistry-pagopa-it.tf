@@ -24,12 +24,12 @@ variable "tlscert-uat-api-uat-userregistry-pagopa-it" {
 
 locals {
   tlscert-uat-api-uat-userregistry-pagopa-it = {
-    tenant_id         = module.secrets.values["TENANTID"].value
-    subscription_name = var.uat_subscription_name
-    subscription_id   = module.secrets.values["UAT-SUBSCRIPTION-ID"].value
-    dns_zone_resource_group = local.uat_vnet_rg
-    credential_subcription    = var.uat_subscription_name
-    credential_key_vault_name = local.uat_key_vault_name
+    tenant_id                           = module.secrets.values["TENANTID"].value
+    subscription_name                   = var.uat_subscription_name
+    subscription_id                     = module.secrets.values["UAT-SUBSCRIPTION-ID"].value
+    dns_zone_resource_group             = local.uat_vnet_rg
+    credential_subcription              = var.uat_subscription_name
+    credential_key_vault_name           = local.uat_key_vault_name
     credential_key_vault_resource_group = local.uat_key_vault_resource_group
     service_connection_ids_authorization = [
       module.UAT-TLS-CERT-SERVICE-CONN.service_endpoint_id,
@@ -44,6 +44,7 @@ locals {
 }
 
 # change only providers
+#tfsec:ignore:GEN003
 module "tlscert-uat-api-uat-userregistry-pagopa-it-cert_az" {
   source = "git::https://github.com/pagopa/azuredevops-tf-modules.git//azuredevops_build_definition_tls_cert?ref=v2.0.3"
   count  = var.tlscert-uat-api-uat-userregistry-pagopa-it.pipeline.enable_tls_cert == true ? 1 : 0

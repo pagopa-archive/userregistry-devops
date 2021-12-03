@@ -36,22 +36,22 @@ locals {
   }
   # deploy vars
   userregistry-management-variables_deploy = {
-    image_repository_name                  = replace(var.userregistry-management.repository.name, "-", "")
+    k8s_image_repository_name              = replace(var.userregistry-management.repository.name, "-", "")
     deploy_namespace                       = "usrreg"
     common_container_registry_name         = "ghcr.io"
     common_container_registry_service_conn = azuredevops_serviceendpoint_dockerregistry.github_docker_registry_ro.service_endpoint_name
     dev_container_registry_service_conn    = azuredevops_serviceendpoint_azurecr.azurecr-dev.service_endpoint_name
     dev_kubernetes_service_conn            = azuredevops_serviceendpoint_kubernetes.aks-dev.service_endpoint_name
-    dev_container_registry_name            = format("%sdacr.azurecr.io", local.prefix)
-    dev_agent_pool                         = format("%s-dev-linux", local.prefix)
+    dev_container_registry_name            = "${local.docker_registry_name_dev}.azurecr.io"
+    dev_agent_pool                         = "${local.prefix}-dev-linux"
     # uat_container_registry_service_conn    = azuredevops_serviceendpoint_azurecr.azurecr-uat.service_endpoint_name
     # uat_kubernetes_service_conn            = azuredevops_serviceendpoint_kubernetes.aks-uat.service_endpoint_name
-    # uat_container_registry_name            = format("%suacr.azurecr.io", local.prefix)
-    # uat_agent_pool                         = format("%s-uat-linux", local.prefix)
+    # uat_container_registry_name            = "${local.docker_registry_name_uat}.azurecr.io"
+    # uat_agent_pool                         = "${local.prefix}-uat-linux"
     # prod_container_registry_service_conn    = azuredevops_serviceendpoint_azurecr.azurecr-prod.service_endpoint_name
     # prod_kubernetes_service_conn            = azuredevops_serviceendpoint_kubernetes.aks-prod.service_endpoint_name
-    # prod_container_registry_name            = format("%spacr.azurecr.io", local.prefix)
-    # prod_agent_pool                         = format("%s-prod-linux", local.prefix)
+    # prod_container_registry_name            = "${local.docker_registry_name_prod}.azurecr.io"
+    # prod_agent_pool                         = "${local.prefix}-prod-linux"
   }
   # deploy secrets
   userregistry-management-variables_secret_deploy = {

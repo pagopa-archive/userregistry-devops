@@ -1,6 +1,7 @@
 #
 # ⛩ Service connection 2 🔐  KV
 #
+#tfsec:ignore:GEN003
 module "DEV-TLS-CERT-SERVICE-CONN" {
   depends_on = [azuredevops_project.project]
   source     = "git::https://github.com/pagopa/azuredevops-tf-modules.git//azuredevops_serviceendpoint_azurerm_limited?ref=v2.0.3"
@@ -36,6 +37,7 @@ resource "azurerm_key_vault_access_policy" "DEV-TLS-CERT-SERVICE-CONN_kv_dev" {
   certificate_permissions = ["Get", "Import"]
 }
 
+#tfsec:ignore:GEN003
 module "UAT-TLS-CERT-SERVICE-CONN" {
   depends_on = [azuredevops_project.project]
   source     = "git::https://github.com/pagopa/azuredevops-tf-modules.git//azuredevops_serviceendpoint_azurerm_limited?ref=v2.0.3"
@@ -70,6 +72,7 @@ resource "azurerm_key_vault_access_policy" "UAT-TLS-CERT-SERVICE-CONN_kv_uat" {
   certificate_permissions = ["Get", "Import"]
 }
 
+#tfsec:ignore:GEN003
 module "PROD-TLS-CERT-SERVICE-CONN" {
   depends_on = [azuredevops_project.project]
   source     = "git::https://github.com/pagopa/azuredevops-tf-modules.git//azuredevops_serviceendpoint_azurerm_limited?ref=v2.0.3"

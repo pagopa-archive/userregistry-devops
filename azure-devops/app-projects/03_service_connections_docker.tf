@@ -21,3 +21,17 @@ resource "azuredevops_serviceendpoint_azurecr" "azurecr-dev" {
   azurecr_spn_tenantid      = module.secrets.values["TENANTID"].value
   azurecr_subscription_id   = module.secrets.values["DEV-SUBSCRIPTION-ID"].value
 }
+
+# UAT service connection for azure container registry 
+resource "azuredevops_serviceendpoint_azurecr" "azurecr-uat" {
+  depends_on = [azuredevops_project.project]
+
+  service_endpoint_name = local.srv_endpoint_docker_registry_uat
+  azurecr_name          = local.docker_registry_name_uat
+  project_id            = azuredevops_project.project.id
+  resource_group        = local.docker_registry_rg_name_uat
+
+  azurecr_subscription_name = var.uat_subscription_name
+  azurecr_spn_tenantid      = module.secrets.values["TENANTID"].value
+  azurecr_subscription_id   = module.secrets.values["UAT-SUBSCRIPTION-ID"].value
+}

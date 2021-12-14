@@ -46,7 +46,7 @@ locals {
 # change only providers
 #tfsec:ignore:GEN003
 module "tlscert-dev-api-internal-dev-userregistry-pagopa-it-cert_az" {
-  source = "git::https://github.com/pagopa/azuredevops-tf-modules.git//azuredevops_build_definition_tls_cert?ref=v2.0.3"
+  source = "git::https://github.com/pagopa/azuredevops-tf-modules.git//azuredevops_build_definition_tls_cert?ref=v2.0.4"
   count  = var.tlscert-dev-api-internal-dev-userregistry-pagopa-it.pipeline.enable_tls_cert == true ? 1 : 0
 
   # change me
@@ -83,4 +83,17 @@ module "tlscert-dev-api-internal-dev-userregistry-pagopa-it-cert_az" {
   )
 
   service_connection_ids_authorization = local.tlscert-dev-api-internal-dev-userregistry-pagopa-it.service_connection_ids_authorization
+
+  schedules = {
+    days_to_build              = ["Mon"]
+    schedule_only_with_changes = false
+    start_hours                = 3
+    start_minutes              = 10
+    time_zone                  = "(UTC+01:00) Amsterdam, Berlin, Bern, Rome, Stockholm, Vienna"
+    branch_filter = {
+      include = ["main"]
+      exclude = []
+    }
+  }
+
 }

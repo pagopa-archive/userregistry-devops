@@ -17,3 +17,19 @@ module "secrets" {
     "PROD-SUBSCRIPTION-ID",
   ]
 }
+
+module "secrets_prod" {
+  source = "git::https://github.com/pagopa/azurerm.git//key_vault_secrets_query?ref=v2.0.5"
+  providers = {
+    azurerm = azurerm.prod
+  }
+
+  resource_group = local.prod_key_vault_resource_group
+  key_vault_name = local.prod_key_vault_name
+
+  secrets = [
+    "aks-apiserver-url",
+    "aks-azure-devops-sa-cacrt",
+    "aks-azure-devops-sa-token",
+  ]
+}

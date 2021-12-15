@@ -40,14 +40,17 @@ locals {
     deploy_namespace                       = "usrreg"
     common_container_registry_name         = "ghcr.io"
     common_container_registry_service_conn = azuredevops_serviceendpoint_dockerregistry.github_docker_registry_ro.service_endpoint_name
+    # 🟢 DEV
     dev_container_registry_service_conn    = azuredevops_serviceendpoint_azurecr.azurecr-dev.service_endpoint_name
     dev_kubernetes_service_conn            = azuredevops_serviceendpoint_kubernetes.aks-dev.service_endpoint_name
     dev_container_registry_name            = "${local.docker_registry_name_dev}.azurecr.io"
     dev_agent_pool                         = "${local.prefix}-dev-linux"
+    # 🟨 UAT
     uat_container_registry_service_conn    = azuredevops_serviceendpoint_azurecr.azurecr-uat.service_endpoint_name
     uat_kubernetes_service_conn            = azuredevops_serviceendpoint_kubernetes.aks-uat.service_endpoint_name
     uat_container_registry_name            = "${local.docker_registry_name_uat}.azurecr.io"
     uat_agent_pool                         = "${local.prefix}-uat-linux"
+    # 🛑 PROD
     # prod_container_registry_service_conn    = azuredevops_serviceendpoint_azurecr.azurecr-prod.service_endpoint_name
     # prod_kubernetes_service_conn            = azuredevops_serviceendpoint_kubernetes.aks-prod.service_endpoint_name
     # prod_container_registry_name            = "${local.docker_registry_name_prod}.azurecr.io"
@@ -58,6 +61,8 @@ locals {
 
   }
 }
+
+#--------------------------------------------------------------------------------------------------
 
 module "userregistry-management_deploy" {
   source = "git::https://github.com/pagopa/azuredevops-tf-modules.git//azuredevops_build_definition_deploy?ref=v1.0.0"
@@ -82,10 +87,13 @@ module "userregistry-management_deploy" {
   service_connection_ids_authorization = [
     azuredevops_serviceendpoint_github.azure-devops-github-ro.id,
     azuredevops_serviceendpoint_dockerregistry.github_docker_registry_ro.id,
+    # 🟢 DEV
     azuredevops_serviceendpoint_azurecr.azurecr-dev.id,
     azuredevops_serviceendpoint_kubernetes.aks-dev.id,
+    # 🟨 UAT
     azuredevops_serviceendpoint_kubernetes.aks-uat.id,
     azuredevops_serviceendpoint_azurecr.azurecr-uat.id,
+    # 🛑 PROD
     # azuredevops_serviceendpoint_kubernetes.aks-prod.id,
     # azuredevops_serviceendpoint_azurecr.azurecr-prod.id,
   ]

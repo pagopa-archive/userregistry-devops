@@ -1,6 +1,6 @@
 resource "azuredevops_project" "project" {
-  name               = format("%s-projects", var.project_name_prefix)
-  description        = format("This is the DevOps project for %s service projects", var.project_name_prefix)
+  name               = "${var.project_name_prefix}-projects"
+  description        = "This is the DevOps project for ${var.project_name_prefix} service projects"
   visibility         = "public"
   version_control    = "Git"
   work_item_template = "Basic"

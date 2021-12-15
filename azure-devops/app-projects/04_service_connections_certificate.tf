@@ -1,5 +1,5 @@
 #
-# ⛩ Service connection 2 🔐  KV
+# ⛩ Service connection 2 🔐 KV@DEV 🟢
 #
 #tfsec:ignore:GEN003
 module "DEV-TLS-CERT-SERVICE-CONN" {
@@ -11,7 +11,7 @@ module "DEV-TLS-CERT-SERVICE-CONN" {
 
   project_id        = azuredevops_project.project.id
   renew_token       = local.tlscert_renew_token
-  name              = format("%s-d-tls-cert", local.prefix)
+  name              = "${local.prefix}-d-tls-cert"
   tenant_id         = module.secrets.values["TENANTID"].value
   subscription_id   = module.secrets.values["DEV-SUBSCRIPTION-ID"].value
   subscription_name = var.dev_subscription_name
@@ -37,6 +37,9 @@ resource "azurerm_key_vault_access_policy" "DEV-TLS-CERT-SERVICE-CONN_kv_dev" {
   certificate_permissions = ["Get", "Import"]
 }
 
+#
+# ⛩ Service connection 2 🔐 KV@UAT 🟨
+#
 #tfsec:ignore:GEN003
 module "UAT-TLS-CERT-SERVICE-CONN" {
   depends_on = [azuredevops_project.project]
@@ -47,7 +50,7 @@ module "UAT-TLS-CERT-SERVICE-CONN" {
 
   project_id        = azuredevops_project.project.id
   renew_token       = local.tlscert_renew_token
-  name              = format("%s-u-tls-cert", local.prefix)
+  name              = "${local.prefix}-u-tls-cert"
   tenant_id         = module.secrets.values["TENANTID"].value
   subscription_id   = module.secrets.values["UAT-SUBSCRIPTION-ID"].value
   subscription_name = var.uat_subscription_name
@@ -72,6 +75,9 @@ resource "azurerm_key_vault_access_policy" "UAT-TLS-CERT-SERVICE-CONN_kv_uat" {
   certificate_permissions = ["Get", "Import"]
 }
 
+#
+# ⛩ Service connection 2 🔐 KV@PROD 🛑
+#
 #tfsec:ignore:GEN003
 module "PROD-TLS-CERT-SERVICE-CONN" {
   depends_on = [azuredevops_project.project]
@@ -82,7 +88,7 @@ module "PROD-TLS-CERT-SERVICE-CONN" {
 
   project_id        = azuredevops_project.project.id
   renew_token       = local.tlscert_renew_token
-  name              = format("%s-p-tls-cert", local.prefix)
+  name              = "${local.prefix}-p-tls-cert"
   tenant_id         = module.secrets.values["TENANTID"].value
   subscription_id   = module.secrets.values["PROD-SUBSCRIPTION-ID"].value
   subscription_name = var.prod_subscription_name

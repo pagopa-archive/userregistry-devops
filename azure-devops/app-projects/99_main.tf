@@ -18,8 +18,8 @@ provider "azurerm" {
 
 provider "azurerm" {
   features {}
-  alias           = "prod"
-  subscription_id = module.secrets.values["PROD-SUBSCRIPTION-ID"].value
+  alias           = "dev"
+  subscription_id = module.secrets.values["DEV-SUBSCRIPTION-ID"].value
 }
 
 provider "azurerm" {
@@ -28,9 +28,8 @@ provider "azurerm" {
   subscription_id = module.secrets.values["UAT-SUBSCRIPTION-ID"].value
 }
 
-
 provider "azurerm" {
   features {}
-  alias           = "dev"
-  subscription_id = module.secrets.values["DEV-SUBSCRIPTION-ID"].value
+  alias           = "prod"
+  subscription_id = module.secrets.values["PROD-SUBSCRIPTION-ID"].value
 }

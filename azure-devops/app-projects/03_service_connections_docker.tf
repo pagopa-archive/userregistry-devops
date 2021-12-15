@@ -12,11 +12,11 @@ resource "azuredevops_serviceendpoint_dockerregistry" "github_docker_registry_ro
 resource "azuredevops_serviceendpoint_azurecr" "azurecr-dev" {
   depends_on = [azuredevops_project.project]
 
-  project_id            = azuredevops_project.project.id
-  resource_group        = local.docker_registry_rg_name_dev
+  project_id     = azuredevops_project.project.id
+  resource_group = local.docker_registry_rg_name_dev
 
   service_endpoint_name = local.srv_endpoint_docker_registry_dev
-  azurecr_name              = local.docker_registry_name_dev
+  azurecr_name          = local.docker_registry_name_dev
 
   azurecr_subscription_name = var.dev_subscription_name
   azurecr_spn_tenantid      = module.secrets.values["TENANTID"].value
@@ -30,8 +30,8 @@ resource "azuredevops_serviceendpoint_azurecr" "azurecr-uat" {
   service_endpoint_name = local.srv_endpoint_docker_registry_uat
   azurecr_name          = local.docker_registry_name_uat
 
-  project_id            = azuredevops_project.project.id
-  resource_group        = local.docker_registry_rg_name_uat
+  project_id     = azuredevops_project.project.id
+  resource_group = local.docker_registry_rg_name_uat
 
   azurecr_subscription_name = var.uat_subscription_name
   azurecr_spn_tenantid      = module.secrets.values["TENANTID"].value
@@ -44,9 +44,9 @@ resource "azuredevops_serviceendpoint_azurecr" "azurecr-prod" {
 
   service_endpoint_name = local.srv_endpoint_docker_registry_prod
   azurecr_name          = local.docker_registry_name_prod
-  
-  project_id            = azuredevops_project.project.id
-  resource_group        = local.docker_registry_rg_name_prod
+
+  project_id     = azuredevops_project.project.id
+  resource_group = local.docker_registry_rg_name_prod
 
   azurecr_subscription_name = var.prod_subscription_name
   azurecr_spn_tenantid      = module.secrets.values["TENANTID"].value

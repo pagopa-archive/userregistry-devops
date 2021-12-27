@@ -19,9 +19,11 @@ variable "project_name_prefix" {
 }
 
 locals {
-  prefix              = "usrreg"
-  azure_devops_org    = "pagopaspa"
-  github_org          = "pagopa"
+  prefix           = "usrreg"
+  azure_devops_org = "pagopaspa"
+  github_org       = "pagopa"
+
+  #tfsec:ignore:GEN002
   tlscert_renew_token = "v1"
 
   dev_key_vault_name  = format("%s-d-kv", local.prefix)

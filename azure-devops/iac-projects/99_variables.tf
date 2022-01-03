@@ -18,6 +18,8 @@ variable "project_name_prefix" {
   description = "Project name prefix (e.g. userregistry)"
 }
 
+#--------------------------------------------------------------------------------------------------
+
 locals {
   prefix           = "usrreg"
   azure_devops_org = "pagopaspa"
@@ -25,15 +27,16 @@ locals {
 
   #tfsec:ignore:GEN002
   tlscert_renew_token = "v1"
+  github_infra_repo_name = "${var.project_name_prefix}-infra"
 
-  dev_key_vault_name  = format("%s-d-kv", local.prefix)
-  uat_key_vault_name  = format("%s-u-kv", local.prefix)
-  prod_key_vault_name = format("%s-p-kv", local.prefix)
+  # 🔐 KV
+  dev_key_vault_name  = "${local.prefix}-d-kv-neu"
+  uat_key_vault_name  = "${local.prefix}-u-kv-neu"
+  prod_key_vault_name = "${local.prefix}-p-kv-weu"
 
-  dev_key_vault_resource_group  = format("%s-d-sec-rg", local.prefix)
-  uat_key_vault_resource_group  = format("%s-u-sec-rg", local.prefix)
-  prod_key_vault_resource_group = format("%s-p-sec-rg", local.prefix)
-
+  dev_key_vault_resource_group  = "${local.prefix}-d-sec-rg-neu"
+  uat_key_vault_resource_group  = "${local.prefix}-u-sec-rg-neu"
+  prod_key_vault_resource_group = "${local.prefix}-p-sec-rg-weu"
 
   #
   # IaC

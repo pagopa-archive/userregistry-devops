@@ -1,8 +1,7 @@
 variable "iac" {
   default = {
     repository = {
-      organization    = ""
-      name            = ""
+      organization    = "pagopa"
       branch_name     = "main"
       pipelines_path  = ".devops"
       yml_prefix_name = null
@@ -15,7 +14,7 @@ variable "iac" {
 }
 
 module "iac_code_review" {
-  source = "git::https://github.com/pagopa/azuredevops-tf-modules.git//azuredevops_build_definition_code_review?ref=v2.0.3"
+  source = "git::https://github.com/pagopa/azuredevops-tf-modules.git//azuredevops_build_definition_code_review?ref=v2.0.4"
   count  = var.iac.pipeline.enable_code_review == true ? 1 : 0
 
   project_id = azuredevops_project.project.id
@@ -23,7 +22,7 @@ module "iac_code_review" {
     var.iac.repository,
     {
       organization = local.github_org
-      name         = format("%s-infra", var.project_name_prefix)
+      name         = "${local.github_infra_repo_name}"
     }
   )
   github_service_connection_id = azuredevops_serviceendpoint_github.azure-devops-github-pr.id
@@ -49,7 +48,7 @@ module "iac_code_review" {
 }
 
 module "iac_deploy" {
-  source = "git::https://github.com/pagopa/azuredevops-tf-modules.git//azuredevops_build_definition_deploy?ref=v2.0.3"
+  source = "git::https://github.com/pagopa/azuredevops-tf-modules.git//azuredevops_build_definition_deploy?ref=v2.0.4"
   count  = var.iac.pipeline.enable_deploy == true ? 1 : 0
 
   project_id = azuredevops_project.project.id
@@ -57,7 +56,7 @@ module "iac_deploy" {
     var.iac.repository,
     {
       organization = local.github_org
-      name         = format("%s-infra", var.project_name_prefix)
+      name         = "${local.github_infra_repo_name}"
     }
   )
   github_service_connection_id = azuredevops_serviceendpoint_github.azure-devops-github-pr.id

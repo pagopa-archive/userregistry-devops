@@ -91,7 +91,7 @@ module "tlscert-uat-api-uat-userregistry-pagopa-it-cert_az" {
     start_minutes              = 30
     time_zone                  = "(UTC+01:00) Amsterdam, Berlin, Bern, Rome, Stockholm, Vienna"
     branch_filter = {
-      include = ["main"]
+      include = ["master"]
       exclude = []
     }
   }

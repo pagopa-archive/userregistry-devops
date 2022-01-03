@@ -48,7 +48,7 @@ locals {
 # change only providers
 #tfsec:ignore:GEN003
 module "tlscert-prod-api-internal-prod-userregistry-pagopa-it-cert_az" {
-  source = "git::https://github.com/pagopa/azuredevops-tf-modules.git//azuredevops_build_definition_tls_cert?ref=v2.0.3"
+  source = "git::https://github.com/pagopa/azuredevops-tf-modules.git//azuredevops_build_definition_tls_cert?ref=v2.0.4"
   count  = var.tlscert-prod-api-internal-prod-userregistry-pagopa-it.pipeline.enable_tls_cert == true ? 1 : 0
 
   # change me

@@ -61,3 +61,73 @@ resource "azuredevops_serviceendpoint_azurerm" "PROD-SERVICE-CONN" {
   azurerm_spn_tenantid      = module.secrets.values["TENANTID"].value
   azurerm_subscription_id   = module.secrets.values["PROD-SUBSCRIPTION-ID"].value
 }
+
+#
+# Permissions
+#
+
+# 🟢 DEV azure devops kv access policy
+data "azuread_service_principal" "iac_principal_dev" {
+  display_name = "${local.azure_devops_org}-${var.project_name_prefix}-iac-projects-${module.secrets.values["DEV-SUBSCRIPTION-ID"].value}"
+
+  depends_on = [
+    azuredevops_serviceendpoint_azurerm.DEV-SERVICE-CONN
+  ]
+}
+
+resource "azurerm_key_vault_access_policy" "azdevops_iac_policy_dev" {
+  provider = azurerm.dev
+
+  key_vault_id = data.azurerm_key_vault.kv_dev.id
+  tenant_id    = module.secrets.values["TENANTID"].value
+  object_id    = data.azuread_service_principal.iac_principal_dev.object_id
+
+  key_permissions         = ["Get", "List", "Update", "Create", "Import", "Delete", ]
+  secret_permissions      = ["Get", "List", "Set", "Delete", ]
+  certificate_permissions = ["Get", "List", "Update", "Create", ]
+  storage_permissions     = []
+}
+
+# 🟨 UAT azure devops kv access policy
+data "azuread_service_principal" "iac_principal_uat" {
+  display_name = "${local.azure_devops_org}-${var.project_name_prefix}-iac-projects-${module.secrets.values["UAT-SUBSCRIPTION-ID"].value}"
+
+  depends_on = [
+    azuredevops_serviceendpoint_azurerm.UAT-SERVICE-CONN
+  ]
+}
+
+resource "azurerm_key_vault_access_policy" "azdevops_iac_policy_uat" {
+  provider = azurerm.uat
+
+  key_vault_id = data.azurerm_key_vault.kv_uat.id
+  tenant_id    = module.secrets.values["TENANTID"].value
+  object_id    = data.azuread_service_principal.iac_principal_uat.object_id
+
+  key_permissions         = ["Get", "List", "Update", "Create", "Import", "Delete", ]
+  secret_permissions      = ["Get", "List", "Set", "Delete", ]
+  certificate_permissions = ["Get", "List", "Update", "Create", ]
+  storage_permissions     = []
+}
+
+# 🛑 PROD azure devops kv access policy
+data "azuread_service_principal" "iac_principal_prod" {
+  display_name = "${local.azure_devops_org}-${var.project_name_prefix}-iac-projects-${module.secrets.values["PROD-SUBSCRIPTION-ID"].value}"
+
+  depends_on = [
+    azuredevops_serviceendpoint_azurerm.PROD-SERVICE-CONN
+  ]
+}
+
+resource "azurerm_key_vault_access_policy" "azdevops_iac_policy_prod" {
+  provider = azurerm.prod
+
+  key_vault_id = data.azurerm_key_vault.kv_prod.id
+  tenant_id    = module.secrets.values["TENANTID"].value
+  object_id    = data.azuread_service_principal.iac_principal_prod.object_id
+
+  key_permissions         = ["Get", "List", "Update", "Create", "Import", "Delete", ]
+  secret_permissions      = ["Get", "List", "Set", "Delete", ]
+  certificate_permissions = ["Get", "List", "Update", "Create", ]
+  storage_permissions     = []
+}
